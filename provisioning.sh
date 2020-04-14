@@ -16,6 +16,7 @@ red_bold="\033[1;31;49m"
 normal="\033[0m"
 VENV_NAME="py3e"
 USER_DIR="/home/vagrant/"
+EXPORTS="/vagrant_data/exports"
 PYTHON_VERSION="3.8.2"
 PYTHON_PCKS=(
         build-essential
@@ -57,16 +58,35 @@ printf "\n"
 
 
 cd /usr/src
-printf "$green_bold[DOWNLOADING]$normal - Downloading:$red_bold Python $PYTHON_VERSION$normal"
+printf "$green_bold[DOWNLOADING]$normal - Downloading:$red_bold Python $PYTHON_VERSION$normal\n"
 sudo wget -q -nv https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
 
-printf "$green_bold[EXTRACTING]$normal  - Extracting:$red_bold Python $PYTHON_VERSION source at: /usr/src$normal"
+printf "$green_bold[EXTRACTING]$normal  - Extracting:$red_bold Python $PYTHON_VERSION source at: /usr/src$normal\n"
 sudo tar zxf Python-$PYTHON_VERSION.tgz > /dev/null 2>&1
 
 cd Python-$PYTHON_VERSION
-printf "$green_bold[BUILDING]\t$normal   - Building:$red_bold Python $PYTHON_VERSION (This will take some minutes)$normal"
+printf "$green_bold[BUILDING]\t$normal   - Building:$red_bold Python $PYTHON_VERSION (This will take some minutes)$normal\n"
 sudo ./configure --enable-optimizations > /dev/null 2>&1
 sudo make altinstall > /dev/null 2>&1
 
-printf "$green_bold[CLEANUP]\t$normal   - Cleaning:$red_bold Python $PYTHON_VERSION source files.$normal"
-sudo rm /usr/src/Python-$PYTHON_VERSION.tgz > /dev/null 2>&1
+printf "$green_bold[CLEANUP]\t$normal   - Cleaning:$red_bold Python $PYTHON_VERSION source files$normal\n"
+sudo rm /usr/src/Python-$PYTHON_VERSION.tgz > /dev/null 2>&1 
+
+
+printf "$normal\n\n############################################################################$normal\n"
+printf "$normal\t\t[CONFIGURING] PYTHON $PYTHON_VERSION$normal\n"
+printf "$normal############################################################################$normal\n"
+
+
+# VENV
+printf "$green_bold[SETTING]$normal\t - Setting: $red_bold Aliases at $ALIASES$normal\n"
+source $EXPORTS
+
+printf "$green_bold[INSTALLING]$normal\t - Packet: $red_bold Virtualenv $normal\n"
+pip$PIP_VERSION install virtualenv
+
+printf "$green_bold[CREATING]$normal\t\t - Packet: $red_bold Virtualenv Name: $VENV_NAME$normal\n"
+virtualenv -p python$PIP_VERSION $USER_DIR$VENV_NAME/
+cd $USER_DIR$VENV_NAME/
+source bin/activate
+printf "\n\n"
