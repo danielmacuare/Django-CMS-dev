@@ -17,6 +17,7 @@ normal="\033[0m"
 VENV_NAME="venvs/py3e"
 USER_DIR="/home/vagrant/"
 EXPORTS="/vagrant_data/exports"
+# For all available Python versions check here https://www.python.org/ftp/python/
 PYTHON_VERSION="3.8.2"
 PIP_VERSION="3.8"
 PYTHON_PCKS=(
