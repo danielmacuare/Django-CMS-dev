@@ -1,1 +1,3 @@
-nornir
+termcolor
+pyyaml
+jinja2
