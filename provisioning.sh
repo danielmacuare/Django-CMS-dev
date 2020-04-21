@@ -54,6 +54,27 @@ printf "${green_bold}[SOURCING]${normal} - Sourcing: ${red_bold}Variables at $EX
 printf "${green_bold}[UPDATING]${normal} - APT: ${red_bold}(This may take some minutes)${normal}\n"
 sudo apt-get -qqy update > /dev/null 2>&1
 
+
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CREATING] SUDO ADMIN USER '${USER_ADM}' ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[CREATING]${normal} - User: ${red_bold}'${USER_ADM}'${normal}\n"
+echo "User: ${USER_ADM}"
+echo "Pass: ${USER_PASS}"
+sudo useradd -p ${USER_PASS} -s /bin/bash -g sudo ${USER_ADM}
+
+
+
+
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CONFIGURING] SERVICE: SSH ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[RUNNING]${normal}\t  - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/ssh_service.sh'  ${normal}\n"
+sudo bash ${SHARED_DIR}/files/sh_scripts/ssh_service.sh
+
+
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[BUILDING] PYTHON $PYTHON_VERSION FROM SOURCE ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
@@ -84,7 +105,7 @@ printf "${normal}###############################################################
 
 
 printf "${green_bold}[ADDING]${normal}\t  - Packet: ${red_bold}Virtualenv to the PATH${normal}\n"
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="${USER_DIR}/.local/bin:$PATH"
 
 printf "${green_bold}[INSTALLING]${normal} - Packet: ${red_bold}Virtualenv ${normal}\n"
 pip$PIP_VERSION install virtualenv > /dev/null 2>&1
@@ -101,15 +122,6 @@ printf "${green_bold}[INSTALLING]${normal} - PIP: ${red_bold}requirements.txt ${
 python -m pip install -r ${PYTHON_REQ} > /dev/null 2>&1
 
 
-printf "${normal}\n\n############################################################################${normal}\n"
-printf "${normal}\t\t[CREATING] SUDO ADMIN USER '${USER_ADM}' ${normal}\n"
-printf "${normal}############################################################################${normal}\n"
-
-printf "${green_bold}[CREATING]${normal} - User: ${red_bold}'${USER_ADM}'${normal}\n"
-echo "User: ${USER_ADM}"
-echo "Pass: ${USER_PASS}"
-sudo useradd -m -p ${USER_PASS} -s /bin/bash -g sudo ${USER_ADM}
-
 
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[CREATING] CONFIG TEMPLATES ${normal}\n"
@@ -118,11 +130,3 @@ printf "${normal}###############################################################
 printf "${green_bold}[PYTHON]${normal} - Executing: ${red_bold}'/vagrant_data/config.py'  ${normal}\n"
 cd ${SHARED_DIR}
 python config.py
-
-
-printf "${normal}\n\n############################################################################${normal}\n"
-printf "${normal}\t\t[CONFIGURING] SERVICE: SSH ${normal}\n"
-printf "${normal}############################################################################${normal}\n"
-
-printf "${green_bold}[RUNNING]${normal}\t - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/ssh_service.sh'  ${normal}\n"
-sudo bash ${SHARED_DIR}/files/sh_scripts/ssh_service.sh
