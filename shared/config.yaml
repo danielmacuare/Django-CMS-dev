@@ -4,3 +4,6 @@ globals:
 
 ssh:
     authorized_keys: "/etc/ssh/KEYS/%u.pub"
+
+shell:
+    script_name: "DAMT"
