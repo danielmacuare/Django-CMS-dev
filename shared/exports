@@ -1,16 +1,20 @@
 # SERVER CONFIG
+export SHARED_DIR="/vagrant_data"
+export PATH=~/.local/bin:$PATH
+export EXPORTS="${SHARED_DIR}/exports"
+
 # To avoid errror: dpkg-preconfigure: unable to re-open stdin: No such file or directory.
 export DEBIAN_FRONTEND="noninteractive"
-export PATH=~/.local/bin:$PATH
-export USER_ADM='damt' 
-export USER_DIR="/home/vagrant/"
-export EXPORTS="${SHARED_DIR}/exports"
-export SHARED_DIR="/vagrant_data"
 
+# To generate the pass mkpasswd -m sha-512
+# pass=damt1234 (Test environment)
+export USER_ADM='damt' 
+# export USER_DIR="/home/vagrant/"
+export USER_DIR="/home/damt/"
 
 # PYTHON
-VENV_NAME="venvs/py3e"
-PYTHON_REQ="${SHARED_DIR}/requirements.txt"
 # For all available Python versions check here https://www.python.org/ftp/python/
-PYTHON_VERSION="3.8.2"
-PIP_VERSION="3.8"
+export PYTHON_VERSION="3.8.2"
+export PIP_VERSION="3.8"
+export VENV_NAME="venvs/py3e"
+export PYTHON_REQ="${SHARED_DIR}/requirements.txt"
