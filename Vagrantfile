@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
     puts 'Installing vagrant-reload Plugin...'
     system('vagrant plugin install vagrant-reload')
   end
+
   config.vm.box = "ubuntu/bionic64"
   config.vm.network "forwarded_port", guest: 80, host: 8880, host_ip: "127.0.0.1"
   config.vm.synced_folder "./shared/", "/vagrant_data/"

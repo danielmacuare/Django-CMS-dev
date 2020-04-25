@@ -17,6 +17,7 @@ red_bold="\033[1;31;49m"
 normal="\033[0m"
 
 EXPORTS="/vagrant_data/exports"
+# pass=damt1234 (Test environment)
 export USER_PASS='$6$lU4HtFdy.D$sFSkyH13/HjQsFdC8o3i5bgic6xhkLmhcaOu.i9eihGXMoAw6IQtbRs61H0d.fqRj0QNjiaDVhQRRFXyFRxaI1'
 
 
@@ -55,6 +56,11 @@ printf "${green_bold}[UPDATING]${normal} - APT: ${red_bold}(This may take some m
 sudo apt-get -qqy update > /dev/null 2>&1
 
 
+# Building kernel module for Vbox Guest Additions 
+printf "${green_bold}[BUILDING]${normal} - Kernel Modules: ${red_bold}Vbox Guest Additions${normal}\n"
+sudo /sbin/rcvboxadd setup > /dev/null 2>&1
+
+
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[CREATING] SUDO ADMIN USER '${USER_ADM}' ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
@@ -65,23 +71,12 @@ echo "Pass: ${USER_PASS}"
 sudo useradd -p ${USER_PASS} -s /bin/bash -g sudo ${USER_ADM}
 
 
-
-
-printf "${normal}\n\n############################################################################${normal}\n"
-printf "${normal}\t\t[CONFIGURING] SERVICE: SSH ${normal}\n"
-printf "${normal}############################################################################${normal}\n"
-
-printf "${green_bold}[RUNNING]${normal}\t  - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/ssh_service.sh'  ${normal}\n"
-sudo bash ${SHARED_DIR}/files/sh_scripts/ssh_service.sh
-
-
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[BUILDING] PYTHON $PYTHON_VERSION FROM SOURCE ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
 
 INST_PACK "${PYTHON_PCKS[@]}"
 printf "\n"
-
 
 cd /usr/src
 printf "${green_bold}[DOWNLOADING]${normal} - Downloading:${red_bold} Python $PYTHON_VERSION${normal}\n"
@@ -122,7 +117,6 @@ printf "${green_bold}[INSTALLING]${normal} - PIP: ${red_bold}requirements.txt ${
 python -m pip install -r ${PYTHON_REQ} > /dev/null 2>&1
 
 
-
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[CREATING] CONFIG TEMPLATES ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
@@ -130,3 +124,19 @@ printf "${normal}###############################################################
 printf "${green_bold}[PYTHON]${normal} - Executing: ${red_bold}'/vagrant_data/config.py'  ${normal}\n"
 cd ${SHARED_DIR}
 python config.py
+
+
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CONFIGURING] SERVICE: SSH ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[RUNNING]${normal}\t  - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/ssh_service.sh'  ${normal}\n"
+sudo bash ${SHARED_DIR}/files/sh_scripts/ssh_service.sh
+
+
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CONFIGURING] LXD ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/lxd_service.sh'  ${normal}\n"
+sudo bash ${SHARED_DIR}/files/sh_scripts/lxd_service.sh
