@@ -1,4 +1,3 @@
-#!/bin/bash
 
 # ===================================================================
 # provisioning.sh
@@ -140,3 +139,12 @@ printf "${normal}###############################################################
 
 printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/lxd_service.sh'  ${normal}\n"
 sudo bash ${SHARED_DIR}/files/sh_scripts/lxd_service.sh
+
+
+
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CONFIGURING] CONTAINER 1 - ${C1_NAME} ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh'  ${normal}\n"
+sudo bash ${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh
