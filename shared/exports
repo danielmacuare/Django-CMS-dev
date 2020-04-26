@@ -30,3 +30,8 @@ export LXD_CST_PROFILE="dev-prof"
 
 # SSH
 export SSH_AUTH_DIR="/etc/ssh/KEYS/"
+
+# CMS CONTAINER
+C1_NAME="cms-dev"
+C1_DIR="${SHARED_DIR}/${C1_NAME}"
+CMS_EXPORTS="/home/ubuntu/${C1_NAME}/exports"
