@@ -65,10 +65,11 @@ printf "${normal}\t\t[CREATING] SUDO ADMIN USER '${USER_ADM}' ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
 
 printf "${green_bold}[CREATING]${normal} - User: ${red_bold}'${USER_ADM}'${normal}\n"
-echo "User: ${USER_ADM}"
-echo "Pass: ${USER_PASS}"
+printf "${green_bold}[PASS-HASH]:${normal} - Pass: ${red_bold}'${USER_PASS}'${normal}\n"
 sudo useradd -p ${USER_PASS} -s /bin/bash -g sudo ${USER_ADM}
 
+printf "${green_bold}[PASS-HASH]:${normal} - Pass: ${red_bold}'${USER_PASS}'${normal}\n"
+echo "${USER_ADM} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 printf "${normal}\n\n############################################################################${normal}\n"
 printf "${normal}\t\t[BUILDING] PYTHON $PYTHON_VERSION FROM SOURCE ${normal}\n"
