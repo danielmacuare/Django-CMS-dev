@@ -22,6 +22,8 @@ export USER_PASS='$6$lU4HtFdy.D$sFSkyH13/HjQsFdC8o3i5bgic6xhkLmhcaOu.i9eihGXMoAw
 
 PYTHON_PCKS=(
         build-essential
+        libsqlite3
+        libsqlite3-dev
         zlib1g-dev
         libncurses5-dev
         libgdbm-dev
@@ -32,6 +34,8 @@ PYTHON_PCKS=(
         wget
         whois
 )
+# https://stackoverflow.com/questions/10784132/django-no-module-named-sqlite3
+# For Django CMS, SQLITE needs to be installed before building Python
 
 # =================================================================== # Functions # ===================================================================
 INST_PACK(){
@@ -68,7 +72,7 @@ printf "${green_bold}[CREATING]${normal} - User: ${red_bold}'${USER_ADM}'${norma
 printf "${green_bold}[PASS-HASH]:${normal} - Pass: ${red_bold}'${USER_PASS}'${normal}\n"
 sudo useradd -p ${USER_PASS} -s /bin/bash -g sudo ${USER_ADM}
 
-printf "${green_bold}[PASS-HASH]:${normal} - Pass: ${red_bold}'${USER_PASS}'${normal}\n"
+printf "${green_bold}[SUDO]:${normal} - Passwordless User: ${red_bold}'${USER_ADM}'${normal}\n"
 echo "${USER_ADM} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 printf "${normal}\n\n############################################################################${normal}\n"
@@ -144,8 +148,10 @@ sudo bash ${SHARED_DIR}/files/sh_scripts/lxd_service.sh
 
 
 printf "${normal}\n\n############################################################################${normal}\n"
-printf "${normal}\t\t[CONFIGURING] CONTAINER 1 - ${C1_NAME} ${normal}\n"
+printf "${normal}\t\t[CREATING] CONTAINER 1 - ${C1_NAME} ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
 
 printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh'  ${normal}\n"
 sudo bash ${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh
+
+## Server setup finishes at files/sh_scripts/cms-dev
