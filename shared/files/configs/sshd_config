@@ -1,0 +1,11 @@
+AuthorizedKeysFile /etc/ssh/KEYS/%u.pub
+ChallengeResponseAuthentication no
+ListenAddress 0.0.0.0 
+PasswordAuthentication no 
+PermitEmptyPasswords no
+PermitRootLogin no
+# For Prod servers you might want to change it to a random port + 2FA
+Port 22
+PubkeyAuthentication yes
+UseDNS no
+UsePAM no 

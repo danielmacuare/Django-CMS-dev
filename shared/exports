@@ -40,13 +40,12 @@ CMS_PROJECT_DIR="cms-damt"
 CMS_PROJECT_NAME="blog"
 
 
-
-
-
-
-
-
-
+# HAPROXY CONTAINER
+C2_NAME="haproxy-dev"
+C2_DIR="${SHARED_DIR}/${C2_NAME}"
+HAP_USER_DIR="${USER_DIR}"
+HAP_SHARED_DIR="/home/ubuntu/${C2_NAME}"
+HAP_EXPORTS="${HAP_SHARED_DIR}/exports"
 
 
 

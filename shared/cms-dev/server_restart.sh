@@ -22,7 +22,7 @@ do
         sleep 10
     else
         echo "\${C1_NAME} Has booted with the IP: ${CMS_LXD_IP}"
-        sudo lxc exec cms-dev bash /home/ubuntu/cms-dev/djangocms_config.sh
+        sudo lxc exec cms-dev bash /home/ubuntu/cms-dev/djangocms_start.sh
         break
     fi
 done

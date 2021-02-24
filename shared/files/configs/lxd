@@ -1,0 +1,156 @@
+# Already installed in 18.04
+# Decide wheter you eant zfs or btrfs for your storage
+
+
+
+sudo apt install lxc-utils zfsutils-linux zfs-initramfs -y 
+sudo usermod -a -G lxd damt
+sudo newgrp lxd # To make lxd read again the permissions of the group.
+sudo chown damt -R /home/damt/
+
+
+# Create an LXD Managed ZFS Pool storage
+sudo lxc storage create lxdzfs zfs source=/dev/sdc zfs.pool_name=lxdzfs
+
+# NETWORK
+# https://github.com/lxc/lxd/blob/master/doc/networks.md
+# Delete default lxcbr0
+sudo ip link set lxcbr0 down
+sudo brctl delbr lxcbr0
+
+# Create a new bridge
+sudo lxc network create lxdbr0 ipv6.address= one ipv4.address=10.10.20.1/24 ipv4.nat=true dns.domain="damt-dev.com"
+
+
+
+# specify a root disk device for the default profile 
+sudo lxc profile device add default root disk path=/ pool=lxdzfs
+
+
+# Create a new profile dev-prof
+sudo lxc profile copy default dev-prof
+
+
+# Attach the network bridge to the Default LXD Profile
+sudo lxc network attach-profile lxdbr0 dev-prof eth0
+
+# Launch a container
+sudo lxc launch ubuntu:18.04 haprox --profile dev-prof
+
+
+
+
+
+Resources
+https://github.com/lxc/lxd/tree/master/doc
+https://ubuntu.com/blog/network-management-with-lxd-2-3
+https://blog.simos.info/how-to-use-lxd-container-hostnames-on-the-host-in-ubuntu-18-04/
+https://blog.simos.info/how-to-make-your-lxd-containers-get-ip-addresses-from-your-lan-using-a-bridge/
+
+
+# TO-DO
+Restat the Machine and do it again from zero.
+If all works, create 2 machines and test DNS lxc profile device add eth0 root disk path=/ pool=default
+
+
+
+
+
+
+
+
+
+
+sudo lxc init ubuntu:16.04 c1
+sudo lxc config device add c1 eth0 nic nictype=bridged parent=br-c1 name=eth0
+sudo lxc start c1
+
+
+
+
+
+# Create a ZFS Pool
+sudo zpool create lxdzfs /dev/sdc -m /lxdzfs
+
+# Verification
+sudo zfs get mountpoint lxdzfs
+df -h
+
+
+# Lxc Verification
+lxc profile list
+lxc storage list
+
+
+vim config.yaml
+cat config.yaml | lxd init --preseed
+
+
+
+
+sudo lxd init
+lxc launch ubuntu:18.04 haprox-dev
+lxc exec haprox-dev bash
+
+Docs
+    https://github.com/lxc/lxd/tree/master/doc
+
+Would you like to use LXD clustering? (yes/no) [default=no]: n
+Do you want to configure a new storage pool? (yes/no) [default=yes]: y
+Name of the new storage pool [default=default]: lxdzfs
+Name of the storage backend to use (btrfs, dir, lvm, zfs) [default=zfs]:
+Create a new ZFS pool? (yes/no) [default=yes]: yes
+Would you like to use an existing block device? (yes/no) [default=no]:
+Size in GB of the new loop device (1GB minimum) [default=15GB]: 10
+Would you like to connect to a MAAS server? (yes/no) [default=no]: n
+Would you like to create a new local network bridge? (yes/no) [default=yes]:
+What should the new bridge be called? [default=lxdbr0]:
+What IPv4 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]:
+What IPv6 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]:
+Would you like LXD to be available over the network? (yes/no) [default=no]:
+Would you like stale cached images to be updated automatically? (yes/no) [default=yes]
+Would you like a YAML "lxd init" preseed to be printed? (yes/no) [default=no]: yes
+
+
+# Containers /var/lib/lxd
+
+# Daemon settings
+config:
+  core.https_address: 127.0.0.1:1234
+  core.trust_password: damt1234
+  images.auto_update_interval: 6
+
+# Storage pools
+storage_pools:
+- name: data
+  driver: zfs
+  config:     
+    source: lxdzfs
+
+# Network devices
+networks:
+- name: lxdbr-damt
+  type: bridge
+  config:
+    ipv4.address: auto
+    ipv6.address: none
+    dns.domain: "damt-dev.com"
+
+# Profiles
+profiles:
+- name: default
+  devices:
+    root:
+      path: /
+      pool: data
+      type: disk
+- name: dev-env
+  description: "Profile for the Dev Env"
+  config:
+    limits.memory: 2GB
+  devices:
+    eth0:
+      name: eth0
+      nictype: bridged
+      parent: lxdbr-damt 
+      type: nic

@@ -28,10 +28,7 @@ printf "${green_bold}[ENABLING]${normal}   - Virtualenv:${red_bold} 'source${USE
 source $USER_DIR$VENV_NAME/bin/activate
 
 printf "${green_bold}[CREATING]${normal} - Django CMS Project: ${red_bold}Name: '${CMS_PROJECT_NAME}' (On ${C1_NAME}.sh) - THIS WILL TAKE A FEW MINS${normal}\n"
-# djangocms ${CMS_PROJECT_NAME} > /dev/null 2>&1
-djangocms ${CMS_PROJECT_NAME}
-
-echo $(ls -lah)
+djangocms ${CMS_PROJECT_NAME} > /dev/null 2>&1
 
 printf "${green_bold}[PERMISSIONS]${normal} - Adjusting: ${red_bold}'${USER_DIR}' (On ${C1_NAME}.sh)${normal}\n"
 sudo chown damt -R ${USER_DIR} > /dev/null 2>&1

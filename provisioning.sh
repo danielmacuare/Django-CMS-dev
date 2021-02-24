@@ -146,12 +146,21 @@ printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR
 sudo bash ${SHARED_DIR}/files/sh_scripts/lxd_service.sh
 
 
+printf "${normal}\n\n############################################################################${normal}\n"
+printf "${normal}\t\t[CREATING] CONTAINER 1 - ${C2_NAME} ${normal}\n"
+printf "${normal}############################################################################${normal}\n"
+
+printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/${C2_NAME}.sh'  ${normal}\n"
+sudo bash ${SHARED_DIR}/files/sh_scripts/${C2_NAME}.sh
+
 
 printf "${normal}\n\n############################################################################${normal}\n"
-printf "${normal}\t\t[CREATING] CONTAINER 1 - ${C1_NAME} ${normal}\n"
+printf "${normal}\t\t[CREATING] CONTAINER 2 - ${C1_NAME} ${normal}\n"
 printf "${normal}############################################################################${normal}\n"
 
 printf "${green_bold}[RUNNING]${normal} - Shell Script: ${red_bold}'${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh'  ${normal}\n"
 sudo bash ${SHARED_DIR}/files/sh_scripts/${C1_NAME}.sh
+
+
 
 ## Server setup finishes at files/sh_scripts/cms-dev
